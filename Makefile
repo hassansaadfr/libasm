@@ -1,4 +1,4 @@
-NAME		= libasm.a
+NAME		=	libasm.a
 
 SRCS 		=	ft_strlen.s	\
 				ft_strcpy.s	\
