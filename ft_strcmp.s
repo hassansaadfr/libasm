@@ -1,6 +1,6 @@
 
-global _ft_strcmp
-_ft_strcmp:
+global ft_strcmp
+ft_strcmp:
 	xor		rcx, rcx					; Initialise une variable compteur a zero
 	xor		rax, rcx					; Initialise une variable compteur a zero
 

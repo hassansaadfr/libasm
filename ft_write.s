@@ -1,16 +1,17 @@
-global _ft_write
-_ft_write:
-	mov		r8, rdx			; on stocke arg3 dans r8
-	mov		rax, 0x2000004	; syscall a write
+global	ft_write
+extern	__errno_location
+
+ft_write:
+	mov		rax, 1								; syscall a write
 	syscall
-		jc	error_exit		; si erreur jump error_exit
-	jmp		exit_success	; sinon exit success
+	cmp		rax, 0								; compare si le retour du syscall est egal a 0
+	jl		error								; si rax est inferieur a 0 on va a error
+	ret											; return rax
 
-error_exit:
-	mov rax, -1				; rax ( valeur de retour ) devient -1
-	ret						; return
-
-exit_success:
-	mov		rax, r8			; rax ( valeur de retour ) devient nombre de characteres print
-	ret						; return
-
+error:
+	neg		rax									; car le syscall renvoie dans rax errno mais en negatif
+	mov		rdi, rax							; rdi sert de tampon car apres rax prendera le retour de errno location
+	call		__errno_location wrt ..plt		; errno location renvoie un pointeur sur errno
+	mov		[rax], rdi							; ici rax contient l'adresse de errno donc en faisant ca on met rdi dans errno
+	mov		rax, -1								; on met rax à -1 pour renvoyer la bonne valeur d'un appel à write
+	ret											; return rax

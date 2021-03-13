@@ -1,6 +1,6 @@
-global _ft_strlen
+global ft_strlen
 
-_ft_strlen:
+ft_strlen:
 	xor		rcx, rcx					; Initialise une variable compteur a zero
 	jmp		count						; jump dans count
 

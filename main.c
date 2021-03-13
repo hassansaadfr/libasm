@@ -6,7 +6,7 @@
 /*   By: hsaadaou <hsaadaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 15:08:13 by hsaadaou          #+#    #+#             */
-/*   Updated: 2021/03/13 16:54:11 by hsaadaou         ###   ########.fr       */
+/*   Updated: 2021/03/13 18:32:32 by hsaadaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	print_test_strcmp(int *count, int *test_nb)
 	nb_success = 0;
 	total = 0;
 	nb_success += test_strcmp("", "", ++total);
-	nb_success += test_strcmp("a", "a", ++total);
+	nb_success += test_strcmp("z", "a", ++total);
 	nb_success += test_strcmp("azertyuiopqsdfghjklmwxcvbn", "hello", ++total);
 	nb_success += test_strcmp("@&é78966131812'(§è!çà", "NULL", ++total);
 	printf("╠-- ft_strcmp ================== %d / %d --╣\n", nb_success, total);
@@ -85,21 +85,21 @@ void	print_test_strcmp(int *count, int *test_nb)
 
 int		test_strdup(char *s1, int test_nb)
 {
-	int		ft;
-	int		real;
+	int		diff;
 	char	*s2;
 
 	s2 = ft_strdup(s1);
-	ft = strcmp(s1, s2);
-	real = ft_strcmp(s1, s2);
+	diff = ft_strcmp(s1, s2);
+	if (s2)
+		free(s2);
 	printf("| \033[1;34m[TEST ft_strdup %d]\033[0m: ", test_nb);
-	if (ft == real)
+	if (diff == 0)
 	{
 		printf("\033[1;32mOK\033[0m                 |\n");
 		return (1);
 	}
 	else
-		printf("\033[1;31mERROR\nShould return: %d\\Your return: %d\n\033[0m", real, ft);
+		printf("\033[1;31mERROR\nShould return: %s\nYour return: %s\n\033[0m", s1, s2);
 	return (0);
 }
 
@@ -267,7 +267,5 @@ int		main(void)
 	print_test_read(&count, &test_nb);
 	print_test_write(&count, &test_nb);
 	printf("╚-- END ====================== %d / %d --╝\n", count, test_nb);
-
-	// printf("╚----------------------------------------╝\n");
 	return (1);
 }
