@@ -6,13 +6,11 @@
 /*   By: hsaadaou <hsaadaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/12 15:08:13 by hsaadaou          #+#    #+#             */
-/*   Updated: 2021/03/13 18:32:32 by hsaadaou         ###   ########.fr       */
+/*   Updated: 2021/03/14 12:21:20 by hsaadaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libasm.h"
-#include "stdio.h"
-#include "string.h"
 
 int		test_strlen(char *s1, int test_nb)
 {
@@ -24,7 +22,7 @@ int		test_strlen(char *s1, int test_nb)
 	printf("| \033[1;34m[TEST ft_strlen %d]\033[0m: ", test_nb);
 	if (ft == real)
 	{
-		printf("\033[1;32mOK\033[0m                 |\n");
+		printf("                \033[1;32mOK\033[0m |\n");
 		return (1);
 	}
 	else
@@ -43,7 +41,7 @@ void	print_test_strlen(int *count, int *test_nb)
 	nb_success += test_strlen("", ++total);
 	nb_success += test_strlen("a", ++total);
 	nb_success += test_strlen("azertyuiopqsdfghjklmwxcvbn", ++total);
-	nb_success += test_strlen("@&é78966131812'(§è!çà)-$^poiuytrezaqsdfghjklmù`=:;\n,nbvcxw", ++(*test_nb));
+	nb_success += test_strlen("@&é78966131812'(§è!çà)-$^poiuytrezaqsdfghjklmù`=:;\n,nbvcxw", ++total);
 	printf("╠-- ft_strlen ================== %d / %d --╣\n", nb_success, total);
 	*count += nb_success;
 	*test_nb += total;
@@ -59,7 +57,7 @@ int		test_strcmp(char *s1, char *s2, int test_nb)
 	printf("| \033[1;34m[TEST ft_strcmp %d]\033[0m: ", test_nb);
 	if (ft == real)
 	{
-		printf("\033[1;32mOK\033[0m                 |\n");
+		printf("                \033[1;32mOK\033[0m |\n");
 		return (1);
 	}
 	else
@@ -95,7 +93,7 @@ int		test_strdup(char *s1, int test_nb)
 	printf("| \033[1;34m[TEST ft_strdup %d]\033[0m: ", test_nb);
 	if (diff == 0)
 	{
-		printf("\033[1;32mOK\033[0m                 |\n");
+		printf("                \033[1;32mOK\033[0m |\n");
 		return (1);
 	}
 	else
@@ -129,7 +127,7 @@ int		test_strcpy(char *s1, int test_nb)
 	printf("| \033[1;34m[TEST ft_strcpy %d]\033[0m: ", test_nb);
 	if (diff == 0)
 	{
-		printf("\033[1;32mOK\033[0m                 |\n");
+		printf("                \033[1;32mOK\033[0m |\n");
 		return (1);
 	}
 	else
@@ -168,7 +166,7 @@ int		test_read(int fd, int count, char *path, int test_nb)
 	printf("| \033[1;34m[TEST ft_read %d]\033[0m: ", test_nb);
 	if (diff == 0)
 	{
-		printf("\033[1;32m  OK\033[0m                 |\n");
+		printf("                  \033[1;32mOK\033[0m |\n");
 		return (1);
 	}
 	else
@@ -202,7 +200,6 @@ void	print_test_read(int *count, int *test_nb)
 	*test_nb += total;
 }
 
-
 int		test_write(int fd, char *str, int count, int test_nb)
 {
 	int		diff;
@@ -217,7 +214,7 @@ int		test_write(int fd, char *str, int count, int test_nb)
 	printf("| \033[1;34m[TEST ft_write %d]\033[0m: ", test_nb);
 	if (diff == 0)
 	{
-		printf("\033[1;32m OK\033[0m                 |\n");
+		printf("                 \033[1;32mOK\033[0m |\n");
 		return (1);
 	}
 	else
@@ -253,6 +250,88 @@ void	print_test_write(int *count, int *test_nb)
 	*test_nb += total;
 }
 
+t_list	*new_lst(void)
+{
+	return (malloc(sizeof(t_list)));
+}
+
+t_list	*generate_list(int size)
+{
+	t_list	*lst;
+	int		i;
+
+	i = 0;
+	lst = new_lst();
+	while (i < size)
+	{
+		real_ft_lstlast(lst)->next = new_lst();
+		i++;
+	}
+	return (lst);
+}
+
+int		test_ft_list_size(int test_nb, t_list *lst)
+{
+	int		your_return;
+	int		expected;
+	int		out;
+
+	out = 0;
+	your_return = ft_list_size(lst);
+	expected = real_ft_lstsize(lst);
+	if (!lst)
+		lst = new_lst();
+	printf("| \033[1;34m[TEST ft_list_size %d]\033[0m: ", test_nb);
+	if (expected == your_return)
+	{
+		printf("             \033[1;32mOK\033[0m |\n");
+		out = 1;
+	}
+	else
+		printf("\033[1;31m ERROR\n\033[0m");
+	if (lst->content)
+		real_ft_lstclear(&lst, free);
+	return (out);
+}
+
+void	print_test_ft_list_size(int *count, int *test_nb)
+{
+	t_list	*lst;
+	int		nb_success;
+	int		total;
+	int		i;
+
+	nb_success = 0;
+	total = 0;
+	i = 0;
+	while (i < 8)
+	{
+		lst = generate_list(i);
+		nb_success += test_ft_list_size(++total, lst);
+		i++;
+	}
+	nb_success += test_ft_list_size(++total, NULL);
+	printf("╠-- ft_list_size =============== %d / %d --╣\n", nb_success, total);
+	*test_nb += total;
+	*count += nb_success;
+}
+
+void	ascii_art(int valid)
+{
+	char	good[] = "ascii_good.txt";
+	char	wrong[] = "ascii_wrong.txt";
+	int		fd;
+	char	buf[10000];
+
+	fd = open(valid ? good : wrong, O_RDWR);
+	read(fd, buf, 10000);
+	if (valid)
+		printf("\n\033[1;32m%s\033[0m\n", buf);
+	else
+		printf("\n\033[1;31m%s\n\033[0m\n", buf);
+	close(fd);
+}
+
 int		main(void)
 {
 	int		count;
@@ -266,6 +345,8 @@ int		main(void)
 	print_test_strcpy(&count, &test_nb);
 	print_test_read(&count, &test_nb);
 	print_test_write(&count, &test_nb);
-	printf("╚-- END ====================== %d / %d --╝\n", count, test_nb);
+	print_test_ft_list_size(&count, &test_nb);
+	printf("╚-- END ---------------------- %d / %d --╝\n", count, test_nb);
+	ascii_art(count == test_nb);
 	return (1);
 }
